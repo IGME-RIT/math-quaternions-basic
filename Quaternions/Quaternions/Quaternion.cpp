@@ -10,77 +10,99 @@ Quaternion::Quaternion(float w, float x, float y, float z)
 {
 }
 
-Quaternion operator+(Quaternion l, Quaternion r)
+Quaternion::Quaternion(float w, Vector3D v)
+	: w(w), x(v.x), y(v.y), z(v.z)
 {
-	return Quaternion(l.w + r.w, l.x + r.x, l.y + r.y, l.z + r.z);
 }
 
-Quaternion operator-(Quaternion l)
+Quaternion operator+(Quaternion q, Quaternion r)
 {
-	return Quaternion(-l.w, -l.x, -l.y, -l.z);
+	return Quaternion(q.w + r.w, q.x + r.x, q.y + r.y, q.z + r.z);
 }
 
-Quaternion operator-(Quaternion l, Quaternion r)
+Quaternion operator-(Quaternion q)
 {
-	return l + (-r);
+	return Quaternion(-q.w, -q.x, -q.y, -q.z);
 }
 
-Quaternion operator*(Quaternion l, Quaternion r)
+Quaternion operator-(Quaternion q, Quaternion r)
 {
-	float wComp = (r.w * l.w) - (r.x * l.x) - (r.y * l.y) - (r.z * l.z);
-	float xComp = (r.w * l.x) + (r.x * l.w) - (r.y * l.z) + (r.z * l.y);
-	float yComp = (r.w * l.y) + (r.x * l.z) + (r.y * l.w) - (r.z * l.x);
-	float zComp = (r.w * l.z) - (r.x * l.y) - (r.y * l.x) + (r.z * l.w);
+	return q + (-r);
+}
+
+Quaternion operator*(Quaternion q, Quaternion r)
+{
+	float wComp = (q.w * r.w) - (q.x * r.x) - (q.y * r.y) - (q.z * r.z);
+	float xComp = (q.w * r.x) + (q.x * r.w) - (q.y * r.z) + (q.z * r.y);
+	float yComp = (q.w * r.y) + (q.x * r.z) + (q.y * r.w) - (q.z * r.x);
+	float zComp = (q.w * r.z) - (q.x * r.y) - (q.y * r.x) + (q.z * r.w);
 
 	return Quaternion(wComp, xComp, yComp, zComp);
 }
 
-Quaternion operator*(float s, Quaternion l)
+Quaternion operator*(float s, Quaternion q)
 {
-	return Quaternion(s*l.w, s*l.x, s*l.y, s*l.z);
+	return Quaternion(s*q.w, s*q.x, s*q.y, s*q.z);
 }
 
-Quaternion operator*(Quaternion l, float s)
+Quaternion operator*(Quaternion q, float s)
 {
-	return s * l;
+	return s * q;
 }
 
-Quaternion operator/(Quaternion l, float s)
+float Norm(Quaternion q)
 {
-	return Quaternion(l.w / s, l.x / s, l.y / s, l.z / s);
+	return (q.w*q.w + q.x*q.x + q.y*q.y + q.z*q.z);
 }
 
-Quaternion operator/(float s, Quaternion l)
+float Magnitude(Quaternion q)
 {
-	return l / s;
+	return (sqrt(Norm(q)));
 }
 
-Quaternion operator/(Quaternion l, Quaternion r)
+Quaternion operator/(Quaternion q, float s)
+{
+	return Quaternion(q.w / s, q.x / s, q.y / s, q.z / s);
+}
+
+Quaternion operator/(Quaternion q, Quaternion r)
 {
 	float norm = Norm(r);
 
-	Quaternion q = l * r;
+	Quaternion q = q * r;
 
 	return Quaternion(q / norm);
 }
 
-float Norm(Quaternion l)
+Quaternion Normalize(Quaternion q)
 {
-	return (l.w*l.w + l.x*l.x + l.y*l.y + l.z*l.z);
+	return (q / Magnitude(q));
 }
 
-Quaternion Conjugate(Quaternion l)
+Quaternion Conjugate(Quaternion q)
 {
-	return Quaternion(l.w, -l.x, -l.y, -l.y);
+	return Quaternion(q.w, -q.x, -q.y, -q.y);
 }
 
-Quaternion Inverse(Quaternion l)
+Quaternion Inverse(Quaternion q)
 {
-	return(Conjugate(l) / Norm(l));
+	return(Conjugate(q) / Norm(q));
 }
 
-std::ostream& operator<<(std::ostream& os, Quaternion l)
+float Dot(Quaternion q, Quaternion r)
 {
-	os << "(" << l.w << ", " << l.x << ", " << l.y << ", " << l.z << ")";
+	return ((q.w*r.w) + (q.x*r.x) + (q.y*r.y) + (q.z*r.z));
+}
+
+float AngleBetweenQuaternions(Quaternion q, Quaternion r)
+{
+	float cosOfAngle = Dot(q, r) / (Magnitude(q) * Magnitude(r));
+
+	return (acos(cosOfAngle));
+}
+
+std::ostream& operator<<(std::ostream& os, Quaternion q)
+{
+	os << "(" << q.w << ", " << q.x << ", " << q.y << ", " << q.z << ")";
 	return os;
 }
