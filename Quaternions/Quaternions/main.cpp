@@ -1,8 +1,41 @@
+/*
+Title: Matrix Mathematics
+File Name: main.cpp
+Copyright © 2016
+Author: Andrew Litfin
+Written under the supervision of David I. Schwartz, Ph.D., and
+supported by a professional development seed grant from the B. Thomas
+Golisano College of Computing & Information Sciences
+(https://www.rit.edu/gccis) at the Rochester Institute of Technology.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or (at
+your option) any later version.
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+// The primary objective is to study the operations of Quaternions
 #include "Quaternion.h"
 #include <iostream>
 
 int main()
 {
+	// The general for the quaternion expression is
+	// q = w + xi + yj + zk, where w, x, y, z are real numbers
+	// and i, j, k are imaginary numbers
+
+	// According to the Hamiltion's famous expression
+	// i^2 = j^2 = k^2 = -1
+
+	// Quaternions can also be represented as an ordered pair
+	// q = [s, v] where s is real number and v is Vector3D 
+	// similar to q = [s, xi + yj + zk] where x, y, z are obtained from Vector v
+
 	Quaternion q = Quaternion(10, 1, 1, 4);
 	Quaternion l = Quaternion(10, 4, 5, 9);
 
@@ -28,6 +61,12 @@ int main()
 
 	std::cout << "The inverse of the Quaternion is: " << std::endl;
 	std::cout << Inverse(q) << std::endl;
+
+	std::cout << "The dot product of two Quaternions is: " << std::endl;
+	std::cout << Dot(q, l) << std::endl;
+
+	std::cout << "The angle between the two Quaternions is: " << std::endl;
+	std::cout << AngleBetweenQuaternions(q, l) << std::endl;
 
 	std::cin.get();
 }
