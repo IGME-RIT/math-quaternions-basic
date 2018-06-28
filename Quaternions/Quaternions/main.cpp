@@ -1,8 +1,8 @@
 /*
-Title: Matrix Mathematics
+Title: Quaternion Mathematics
 File Name: main.cpp
 Copyright © 2016
-Author: Andrew Litfin
+Author: Parth Contractor
 Written under the supervision of David I. Schwartz, Ph.D., and
 supported by a professional development seed grant from the B. Thomas
 Golisano College of Computing & Information Sciences
